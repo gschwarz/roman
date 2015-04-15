@@ -74,6 +74,7 @@ public class Roman
 	}
 	public int roman( String s )
 	{
+		System.out.println("Invoking roman( s = "+s+")");
 		s = s.trim();
 		int len = s.length();
 		switch( len )
@@ -106,7 +107,16 @@ public class Roman
 					return r2 - r1;
 				}
 				else {
-					return roman( ""+a ) + roman( ""+b );
+					int r1 = roman( ""+a );
+					int r2 = roman( ""+b );
+					if (a == b)
+					{
+						if ( r1 == 5 || r1 == 50 || r1 == 500 )
+						{
+							 throw new RuntimeException( "Cannot add '" + a + "' to '" + b + "'" );
+						}
+					}
+					return r1 + r2;
 				}
 			}
 			default: // bigger than 2
@@ -118,7 +128,7 @@ public class Roman
 					char b = s.charAt( i + 1 );
 					if ( bigger( b, a ) )
 					{
-						k = i;
+						k = i > 0 ? i : i + 2; // cut off before or after if there is nothing before
 						int r1 = roman( ""+a );
 						if ( r1 == 5 || r1 == 50 || r1 == 500 )
 						{
