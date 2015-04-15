@@ -4,6 +4,10 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Roman
 {
@@ -84,6 +88,19 @@ public class Roman
 	I have no idea what you are talking about
 
     */
+	private static	List<String> NumberList = new ArrayList<String>();
+	static {
+		NumberList.add( "I" );
+		NumberList.add( "V" );
+		NumberList.add( "X" );
+		NumberList.add( "L" );
+		NumberList.add( "C" );
+		NumberList.add( "D" );
+		NumberList.add( "M" );
+	};
+	
+	private Map<String, String> numberMap = new HashMap<String, String>();
+	
 	public boolean bigger( char a, char b )
 	{
 		return roman( "" + a ) > roman( "" + b );
@@ -202,13 +219,53 @@ public class Roman
 			}
 		}
 	}
+	public void complainAbout( String line )
+	{
+		System.out.println( "I have no idea what you are talking about when you say '"+line+"'");
+	}
 	public void interpret( String line )
 	{
-		String str = line.
+		String [] str = line.split(" ");
+		switch ( str.length )
+		{
+			case 0: 
+				break; // empty line, do nothing
+			case 1:
+			case 2: 
+				complainAbout( line );
+				break;
+			case 3:
+				if ( ! str[1].equals("is"))
+				{
+					complainAbout( line );
+				}
+				else if ( !NumberList.contains(str[2])) 
+				{
+					System.out.println("Unknown roman symbol " + str[2]);
+				}
+				else {
+					numberMap.put(str[0], str[2]);	
+				}
+				break;
+			default:
+			{
+				int len = str.length;
+				if ( str[ len - 1 ].equals( "?" ) )
+				{
+					
+				}
+				else {
+					
+				}
+			}
+		}
 	}
     public static void main( String [] args )
 		throws IOException
-    {	
+    {		
+		Roman r = new Roman();
+		System.out.println("Extraterrestial Intercommunication Module");
+		System.out.println("Enter your messages:");
 		BufferedReader in = new BufferedReader( new InputStreamReader( System.in ) );
 		for ( ;; )
 		{
@@ -217,7 +274,7 @@ public class Roman
 			{
 				break;
 			}
-			interpret( s );
+			r.interpret( s );
 		}
     }
 }
