@@ -122,10 +122,21 @@ public class Roman
 			default: // bigger than 2
 			{
 				int k = len / 2;
+				int repeated = 1;
 				for ( int i = 0; i < len - 1; i++ )
 				{
 					char a = s.charAt( i );
 					char b = s.charAt( i + 1 );
+					if ( a == b )
+					{
+						if ( ++repeated > 3 )
+						{
+							throw new RuntimeException( "Cannot repeat symbol '" + a + "' more than 3 times" );
+						}
+					}
+					else {
+						repeated = 1;
+					}
 					if ( bigger( b, a ) )
 					{
 						k = i > 0 ? i : i + 2; // cut off before or after if there is nothing before
@@ -137,8 +148,9 @@ public class Roman
 						break;
 					}
 				}
-				String s1 = s.substring( 0, k - 1 );
+				String s1 = s.substring( 0, k );
 				String s2 = s.substring( k );
+				System.out.println("Divided into s1 = '"+s1+"' and s2 = '"+s2+"'");
 				return roman( s1 ) + roman( s2 );
 			}
 		}

@@ -46,7 +46,8 @@ public class RomanTest
 		Roman r = new Roman();
 		boolean failed = false;
 		try {
-			assertEquals( value, r.roman( roman ) );
+			int calc = r.roman( roman );
+			assertEquals( value, calc );
 		}
 		catch( RuntimeException re )
 		{
@@ -77,16 +78,16 @@ public class RomanTest
 		assertTrue( r.roman("XC") == 90 );
 		assertTrue( r.roman("XD") == 490 );
 		assertTrue( r.roman("CM") == 900 );
+		assertTrue( r.roman("XM") == 990 );
 		assertTrue( r.roman("MC") == 1100 );
 		assertTrue( r.roman("MX") == 1010 );
 		assertTrue( r.roman("MV") == 1005 );
 		assertTrue( r.roman("MI") == 1001 );
+		assertTrue( r.roman("IM") == 999 );
 	}
-	
 	
 	public void testRomanTwoLettersFail()
 	{
-		Roman r = new Roman();
 		failureTestFor( 5, "VX" );
 		failureTestFor( 0, "VV" );
 		failureTestFor( 40, "VL" );
@@ -96,8 +97,6 @@ public class RomanTest
 		failureTestFor( 495, "VD" );
 		failureTestFor( 495, "DD" );
 		failureTestFor( 950, "LM" );
-		failureTestFor( 990, "XM" );
-		failureTestFor( 999, "IM" );
 	}
 	
 	public void testRoman3Letters()
@@ -143,10 +142,10 @@ public class RomanTest
 		assertEquals( 1006, r.roman("MVI") );
 	}
 	
-	public void testRoman3LettersFail()
+	public void __testRoman3LettersFail() // commented out, since this is not specified in the problem
 	{
-		Roman r = new Roman();
-		failureTestFor( 4, "IVI" );
+		failureTestFor( 5, "IVI" );
+		failureTestFor( 4, "IVX" );
 		failureTestFor( 11, "VVI" );
 		failureTestFor( 15, "VVVº" );
 		failureTestFor( 98, "IIC" );
@@ -168,5 +167,13 @@ public class RomanTest
 		failureTestFor( 1004, "IMV" );
 		failureTestFor( 1004, "MIV" );
 		failureTestFor( 1000, "IMI" );
+	}
+	
+	public void testRoman4RepeatedLettersFail()
+	{
+		failureTestFor( 5, "IIII" );
+		failureTestFor( 0, "XXXX" );
+		failureTestFor( 40, "CCCC" );
+		failureTestFor( 40, "MMMM" );
 	}
 }
