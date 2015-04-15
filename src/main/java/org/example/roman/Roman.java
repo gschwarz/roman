@@ -252,9 +252,46 @@ public class Roman
 				break;
 			default:
 			{
-				if ( str[ len - 1 ].equals( "?" ) )
+				if ( str[ len - 1 ].equals( "?" ) ) // how much or how many...
 				{
-					
+					if ( ! str[ 0 ].equals( "how" ) )
+					{
+						complainAbout( line );
+						return;
+					}
+					else if ( str[ 1 ].equals( "much" ) )
+					{
+						if ( ! str[ 2 ].equals( "is" ) )
+						{
+							complainAbout( line );
+							return;
+						}
+						else {
+							String roman = "";
+							Set numberSet = numberMap.keySet();
+							for ( int i = 3; i < len - 1; i++ )
+							{
+								String word = str[ i ];
+								if ( numberSet.contains( word ) )
+								{
+									roman += numberMap.get( word );
+								}
+							}
+							System.out.println( roman + " is " + this.roman( roman ) );
+						}
+					}
+					else if ( str[ 1 ].equals( "many" ) )
+					{
+						if ( ! str[ 2 ].equals( "Credits" ) )
+						{
+							complainAbout( line );
+							return;
+						}
+					}
+					else {
+						complainAbout( line );
+						return;
+					}
 				}
 				else {
 					Set numberSet = numberMap.keySet();
