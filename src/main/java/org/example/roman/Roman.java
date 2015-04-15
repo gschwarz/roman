@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Roman
 {
@@ -100,6 +101,7 @@ public class Roman
 	};
 	
 	private Map<String, String> numberMap = new HashMap<String, String>();
+	private Map<String, Fraction> mineralMap = new HashMap<String, Fraction>();
 	
 	public boolean bigger( char a, char b )
 	{
@@ -226,7 +228,8 @@ public class Roman
 	public void interpret( String line )
 	{
 		String [] str = line.split(" ");
-		switch ( str.length )
+		int len = str.length;
+		switch ( len )
 		{
 			case 0: 
 				break; // empty line, do nothing
@@ -249,13 +252,74 @@ public class Roman
 				break;
 			default:
 			{
-				int len = str.length;
 				if ( str[ len - 1 ].equals( "?" ) )
 				{
 					
 				}
 				else {
-					
+					Set numberSet = numberMap.keySet();
+					if ( len < 5 )
+					{
+						complainAbout( line );
+						return;
+					}
+					else if ( ! numberSet.contains( str[0] ) )
+					{
+						complainAbout( line );
+						return;
+					}
+					String mineral = null;
+					boolean isPresent = false;
+					boolean isNumberPresent = false;
+					int number = 0, denominator = 0;
+					String roman = "";
+					for ( String word : str )
+					{
+						if ( numberSet.contains( word ) )
+						{
+							roman += numberMap.get( word );
+						}
+						else {
+							if ( mineral == null )
+							{
+								mineral = word;
+								denominator = this.roman( roman );
+							}
+							else if ( ! isPresent )
+							{
+								if ( ! word.equals( "is" ) )
+								{
+									complainAbout( line );
+									return;
+								}
+								else {
+									isPresent = true;
+								}
+							}
+							else if ( ! isNumberPresent )
+							{
+								try {
+									number = Integer.valueOf( word );
+									isNumberPresent = true;
+								}
+								catch ( NumberFormatException nfe ) // isNumberPresent == false
+								{
+									complainAbout( line );
+									return;
+								} 
+							}
+							else {  // isNumberPresent == true
+								if ( ! word.equals( "Credits" ) )
+								{
+									complainAbout( line );
+									return;
+								}
+								else {
+									mineralMap.put( mineral, new Fraction( number, denominator ) );
+								}
+							}
+						}
+					}
 				}
 			}
 		}
