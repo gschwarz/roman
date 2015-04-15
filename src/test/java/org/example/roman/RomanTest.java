@@ -73,17 +73,18 @@ public class RomanTest
 		assertTrue( r.roman("XX") == 20 );
 		assertTrue( r.roman("XL") == 40 );
 		assertTrue( r.roman("CC") == 200 );
-		assertTrue( r.roman("IC") == 99 );
+		// assertTrue( r.roman("IC") == 99 ); Can't subtract I from C
 		assertTrue( r.roman("CI") == 101 );
 		assertTrue( r.roman("XC") == 90 );
-		assertTrue( r.roman("XD") == 490 );
+		// assertTrue( r.roman("XD") == 490 ); Can't subtract X from D
 		assertTrue( r.roman("CM") == 900 );
-		assertTrue( r.roman("XM") == 990 );
+		// assertTrue( r.roman("XM") == 990 ); Can't subtract X from M
+		assertTrue( r.roman("CM") == 900 );
 		assertTrue( r.roman("MC") == 1100 );
 		assertTrue( r.roman("MX") == 1010 );
 		assertTrue( r.roman("MV") == 1005 );
 		assertTrue( r.roman("MI") == 1001 );
-		assertTrue( r.roman("IM") == 999 );
+		// assertTrue( r.roman("IM") == 999 ); Can't subtract I from M
 	}
 	
 	public void testRomanTwoLettersFail()
@@ -118,8 +119,8 @@ public class RomanTest
 		assertEquals( 210, r.roman("CCX") );
 		assertEquals( 250, r.roman("CCL") );
 		assertEquals( 190, r.roman("CXC") );
-		assertEquals( 491, r.roman("XDI") );
-		assertEquals( 495, r.roman("XDV") );
+		// assertEquals( 491, r.roman("XDI") ); Can't substract X from D
+		// assertEquals( 495, r.roman("XDV") );  Can't substract X from D
 		assertEquals( 901, r.roman("CMI") );
 		assertEquals( 905, r.roman("CMV") );
 		assertEquals( 1002, r.roman("MII") );
@@ -175,5 +176,42 @@ public class RomanTest
 		failureTestFor( 0, "XXXX" );
 		failureTestFor( 40, "CCCC" );
 		failureTestFor( 40, "MMMM" );
+	}
+	
+	public void testRomanGivenExamples()
+	{
+		Roman r = new Roman();
+		assertEquals( 2006, r.roman("MMVI") );
+		assertEquals( 1944, r.roman("MCMXLIV") );
+	}
+	
+	public void testRomanSubstraction()
+	{
+		Roman r = new Roman();
+		assertEquals( 4, r.roman("IV") );
+		assertEquals( 9, r.roman("IX") );
+		assertEquals( 40, r.roman("XL") );
+		assertEquals( 90, r.roman("XC") );
+		assertEquals( 400, r.roman("CD") );
+		assertEquals( 900, r.roman("CM") );
+	}
+	
+	public void testRomanSubstractionFail()
+	{
+		failureTestFor( 4, "IL" );
+		failureTestFor( 9, "IC" );
+		failureTestFor( 40, "ID" );
+		failureTestFor( 90, "IM" );
+		failureTestFor( 400, "XD" );
+		failureTestFor( 900, "XM" );
+		failureTestFor( 900, "VX" );
+		failureTestFor( 900, "VL" );
+		failureTestFor( 900, "VC" );
+		failureTestFor( 900, "VD" );
+		failureTestFor( 900, "VM" );
+		failureTestFor( 900, "LC" );
+		failureTestFor( 900, "LD" );
+		failureTestFor( 900, "LM" );
+		failureTestFor( 900, "DM" );
 	}
 }

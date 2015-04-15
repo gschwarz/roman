@@ -72,6 +72,28 @@ public class Roman
 	{
 		return roman( "" + a ) > roman( "" + b );
 	}
+	
+	public void forbidInvalidSubstraction( char a, char b )
+	{
+		int r1 = roman( ""+a );
+		int r2 = roman( ""+b );
+		if ( r1 == 5 || r1 == 50 || r1 == 500 )
+		{
+			 throw new RuntimeException( "Cannot substract '" + a + "' from '" + b + "'" );
+		}					
+		if ( r1 == 1 && r2 > 10 )
+		{
+			 throw new RuntimeException( "Cannot substract '" + a + "' from '" + b + "'" );
+		}
+		if ( r1 == 10 && r2 > 100 )
+		{
+			 throw new RuntimeException( "Cannot substract '" + a + "' from '" + b + "'" );
+		}
+		if ( r1 == 100 && r2 > 1000 )
+		{
+			 throw new RuntimeException( "Cannot substract '" + a + "' from '" + b + "'" );
+		}
+	}
 	public int roman( String s )
 	{
 		System.out.println("Invoking roman( s = "+s+")");
@@ -98,18 +120,15 @@ public class Roman
 				char b = s.charAt( 1 );
 				if ( bigger( b, a ) )
 				{
+					forbidInvalidSubstraction( a, b );
 					int r1 = roman( ""+a );
-					if ( r1 == 5 || r1 == 50 || r1 == 500 )
-					{
-						 throw new RuntimeException( "Cannot substract '" + a + "' from '" + b + "'" );
-					}
 					int r2 = roman( ""+b );
 					return r2 - r1;
 				}
 				else {
 					int r1 = roman( ""+a );
 					int r2 = roman( ""+b );
-					if (a == b)
+					if ( a == b )
 					{
 						if ( r1 == 5 || r1 == 50 || r1 == 500 )
 						{
@@ -140,11 +159,9 @@ public class Roman
 					if ( bigger( b, a ) )
 					{
 						k = i > 0 ? i : i + 2; // cut off before or after if there is nothing before
+						forbidInvalidSubstraction( a, b );
 						int r1 = roman( ""+a );
-						if ( r1 == 5 || r1 == 50 || r1 == 500 )
-						{
-							 throw new RuntimeException( "Cannot substract '" + a + "' from '" + b + "'" );
-						}
+						int r2 = roman( ""+b );
 						break;
 					}
 				}
@@ -154,7 +171,6 @@ public class Roman
 				return roman( s1 ) + roman( s2 );
 			}
 		}
-		
 	}
     public static void main( String [] args )
 		throws IOException
