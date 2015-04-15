@@ -8,6 +8,8 @@ import java.io.IOException;
 public class Roman
 {
     /*
+	Req. 1:
+	
 	Roman numerals are based on seven symbols:
 
 	Symbol	Value
@@ -19,28 +21,42 @@ public class Roman
 	D	500
 	M	1,000
 
+	Req. 2:
+	
 	Numbers are formed by combining symbols together and adding the values. 
 	For example, MMVI is 1000 + 1000 + 5 + 1 = 2006. Generally, symbols are 
-	placed in order of value, starting with the largest values. When smaller 
+	placed in order of value, starting with the largest values. 
+	
+	Req. 3:
+	
+	When smaller 
 	values precede larger values, the smaller values are subtracted from the 
 	larger values, and the result is added to the total. For example:
 	 MCMXLIV = 1000 + (1000 - 100) + (50 - 10) + (5 - 1) = 1944.
 
+	 Req 4:
 	?The symbols "I", "X", "C", and "M" can be repeated three times 
 		in succession, but no more. (They may appear four times if the 
 		third and fourth are separated by a smaller value, such as XXXIX.) 
 		"D", "L", and "V" can never be repeated.
+		
+	Req. 5:
 	?"I" can be subtracted from "V" and "X" only. "X" can be subtracted
 		from "L" and "C" only. "C" can be subtracted from "D" and "M" only. 
 		"V", "L", and "D" can never be subtracted.
+		
+	Req.6:
 	?Only one small-value symbol may be subtracted from any large-value 
 		symbol.
+		
+	Req. 7: (Is it really necessary???)
 	?A number written in [16]Arabic numerals can be broken into digits. 
 		For example, 1903 is composed of 1, 9, 0, and 3. To write the Roman
 		numeral, each of the non-zero digits should be treated separately. 
 		In the above example, 1,000 = M, 900 = CM, and 3 = III. Therefore, 
 		1903 = MCMIII.
 
+	Req. 8:
 	Input to your program consists of lines of text detailing your notes on 
 	the conversion between intergalactic units and roman numerals.
 
@@ -142,10 +158,32 @@ public class Roman
 			{
 				int k = len / 2;
 				int repeated = 1;
+				int subtracting = 0;
+				char subtracted = '-';
 				for ( int i = 0; i < len - 1; i++ )
 				{
 					char a = s.charAt( i );
 					char b = s.charAt( i + 1 );
+					
+					if ( bigger( b, a ) )
+					{
+						k = i > 0 ? i : i + 2; // cut off before or after if there is nothing before
+						forbidInvalidSubstraction( a, b );
+						if ( ++subtracting > 1 )
+						{
+							throw new RuntimeException( "Cannot subtract '"+subtracted+"' from '"+a+"' and then '" + a + "' from '"+b+"'" );
+						}
+						else {
+							subtracted = a;
+						}
+						if ( repeated > 1 ) // trying to subract a repeated symbol
+						{
+							throw new RuntimeException( "Cannot subtract '"+a+"' more than once from '"+b+"'" );
+						}
+					}
+					else {
+						subtracting = 0;
+					}
 					if ( a == b )
 					{
 						if ( ++repeated > 3 )
@@ -155,14 +193,6 @@ public class Roman
 					}
 					else {
 						repeated = 1;
-					}
-					if ( bigger( b, a ) )
-					{
-						k = i > 0 ? i : i + 2; // cut off before or after if there is nothing before
-						forbidInvalidSubstraction( a, b );
-						int r1 = roman( ""+a );
-						int r2 = roman( ""+b );
-						break;
 					}
 				}
 				String s1 = s.substring( 0, k );

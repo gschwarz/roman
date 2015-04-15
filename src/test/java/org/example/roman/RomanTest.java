@@ -28,7 +28,7 @@ public class RomanTest
         return new TestSuite( RomanTest.class );
     }
 
-    public void testRomanOneLetter()
+    public void testRomanOneLetter() // Req. 1
 	{
 		Roman r = new Roman();
 		assertTrue( r.roman("") == 0 );
@@ -56,35 +56,45 @@ public class RomanTest
 		assertTrue( failed );
 	}
 	
-	public void testRomanOneLetterUnknown()
+	public void testRomanOneLetterUnknown() // Req. 1
 	{
 		failureTestFor( 1000, "P" );
 	}
 	
-	public void testRomanTwoLetters()
+	public void testRomanTwoLettersAdding() // Req. 2
 	{
 		Roman r = new Roman();
-		assertTrue( r.roman("IV") == 4 );
 		assertTrue( r.roman("II") == 2 );
 		assertTrue( r.roman("VI") == 6 );
-		assertTrue( r.roman("IX") == 9 );
 		assertTrue( r.roman("XI") == 11 );
 		assertTrue( r.roman("XV") == 15 );
 		assertTrue( r.roman("XX") == 20 );
-		assertTrue( r.roman("XL") == 40 );
+		assertTrue( r.roman("LI") == 51 );
+		assertTrue( r.roman("LV") == 55 );
+		assertTrue( r.roman("LX") == 60 );
 		assertTrue( r.roman("CC") == 200 );
-		// assertTrue( r.roman("IC") == 99 ); Can't subtract I from C
 		assertTrue( r.roman("CI") == 101 );
-		assertTrue( r.roman("XC") == 90 );
-		// assertTrue( r.roman("XD") == 490 ); Can't subtract X from D
-		assertTrue( r.roman("CM") == 900 );
-		// assertTrue( r.roman("XM") == 990 ); Can't subtract X from M
-		assertTrue( r.roman("CM") == 900 );
+		assertTrue( r.roman("CV") == 105 );
+		assertTrue( r.roman("CX") == 110 );
+		assertTrue( r.roman("CL") == 150 );
+		assertTrue( r.roman("MM") == 2000 );
+		assertTrue( r.roman("MD") == 1500 );
 		assertTrue( r.roman("MC") == 1100 );
+		assertTrue( r.roman("ML") == 1050 );
 		assertTrue( r.roman("MX") == 1010 );
 		assertTrue( r.roman("MV") == 1005 );
 		assertTrue( r.roman("MI") == 1001 );
-		// assertTrue( r.roman("IM") == 999 ); Can't subtract I from M
+	}
+	
+	public void testRomanTwoLettersSubtracting() // Req. 3
+	{
+		Roman r = new Roman();
+		assertTrue( r.roman("IV") == 4 );
+		assertTrue( r.roman("IX") == 9 );
+		assertTrue( r.roman("XL") == 40 );
+		assertTrue( r.roman("CC") == 200 );
+		assertTrue( r.roman("XC") == 90 );
+		assertTrue( r.roman("CM") == 900 );
 	}
 	
 	public void testRomanTwoLettersFail()
@@ -143,12 +153,25 @@ public class RomanTest
 		assertEquals( 1006, r.roman("MVI") );
 	}
 	
+	public void testRoman3LettersFail() // Req. 6
+	{
+		failureTestFor( 4, "IVX" );
+		failureTestFor( 11, "IIX" );
+		failureTestFor( 15, "IIV" );
+		failureTestFor( 98, "IXL" );
+		failureTestFor( 3, "XXC" );
+		failureTestFor( 3, "CCD" );
+		failureTestFor( 3, "CCM" );
+		failureTestFor( 3, "XCM" );
+	}
+	
 	public void __testRoman3LettersFail() // commented out, since this is not specified in the problem
 	{
 		failureTestFor( 5, "IVI" );
+		failureTestFor( 5, "VIV" );
 		failureTestFor( 4, "IVX" );
 		failureTestFor( 11, "VVI" );
-		failureTestFor( 15, "VVVº" );
+		failureTestFor( 15, "VVV" );
 		failureTestFor( 98, "IIC" );
 		failureTestFor( 3, "IIV" );
 		failureTestFor( 8, "IIX" );
@@ -170,7 +193,7 @@ public class RomanTest
 		failureTestFor( 1000, "IMI" );
 	}
 	
-	public void testRoman4RepeatedLettersFail()
+	public void testRoman4RepeatedLettersFail() // Req.4
 	{
 		failureTestFor( 5, "IIII" );
 		failureTestFor( 0, "XXXX" );
@@ -185,7 +208,7 @@ public class RomanTest
 		assertEquals( 1944, r.roman("MCMXLIV") );
 	}
 	
-	public void testRomanSubstraction()
+	public void testRomanSubstraction() // Req. 5
 	{
 		Roman r = new Roman();
 		assertEquals( 4, r.roman("IV") );
@@ -196,7 +219,7 @@ public class RomanTest
 		assertEquals( 900, r.roman("CM") );
 	}
 	
-	public void testRomanSubstractionFail()
+	public void testRomanSubstractionFail() // Req. 5
 	{
 		failureTestFor( 4, "IL" );
 		failureTestFor( 9, "IC" );
