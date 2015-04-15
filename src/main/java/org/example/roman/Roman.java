@@ -202,6 +202,10 @@ public class Roman
 			}
 		}
 	}
+	public void interpret( String line )
+	{
+		String str = line.
+	}
     public static void main( String [] args )
 		throws IOException
     {	
@@ -213,7 +217,7 @@ public class Roman
 			{
 				break;
 			}
-			System.out.println( s );
+			interpret( s );
 		}
     }
 }
