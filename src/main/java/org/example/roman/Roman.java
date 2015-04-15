@@ -227,6 +227,7 @@ public class Roman
 	}
 	public void interpret( String line )
 	{
+		line = line.trim();
 		String [] str = line.split(" ");
 		int len = str.length;
 		switch ( len )
@@ -267,6 +268,7 @@ public class Roman
 							return;
 						}
 						else {
+							String extraterrestrialNumber = "";
 							String roman = "";
 							Set numberSet = numberMap.keySet();
 							for ( int i = 3; i < len - 1; i++ )
@@ -274,10 +276,11 @@ public class Roman
 								String word = str[ i ];
 								if ( numberSet.contains( word ) )
 								{
+									extraterrestrialNumber += word + " ";
 									roman += numberMap.get( word );
 								}
 							}
-							System.out.println( roman + " is " + this.roman( roman ) );
+							System.out.println( extraterrestrialNumber + "is " + this.roman( roman ) );
 						}
 					}
 					else if ( str[ 1 ].equals( "many" ) )
@@ -286,6 +289,32 @@ public class Roman
 						{
 							complainAbout( line );
 							return;
+						}
+						else if ( ! str[ 3 ].equals( "is" ) ) {
+							complainAbout( line );
+							return;
+						}
+						else {
+							String extraterrestrialNumber = "";
+							String roman = "";
+							Set numberSet = numberMap.keySet();
+							for ( int i = 3; i < len - 2; i++ )
+							{
+								String word = str[ i ];
+								if ( numberSet.contains( word ) )
+								{
+									extraterrestrialNumber += word + " ";
+									roman += numberMap.get( word );
+								}
+							}
+							String mineral = str[ len - 2 ];
+							Fraction fraction = mineralMap.get( mineral );
+							if ( fraction == null )
+							{
+								System.out.println("Mineral "+ mineral +" not priced");
+								return;
+							}
+							System.out.println( extraterrestrialNumber + mineral + " is " + this.roman( roman ) + " Credits" );
 						}
 					}
 					else {
