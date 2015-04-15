@@ -75,7 +75,8 @@ public class Roman
 	public int roman( String s )
 	{
 		s = s.trim();
-		switch( s.length() )
+		int len = s.length();
+		switch( len )
 		{
 			case 0:  return 0; 
 			case 1: {
@@ -88,6 +89,7 @@ public class Roman
 					case "C": return 100;
 					case "D": return 500;
 					case "M": return 1000;
+					default: throw new RuntimeException( "Did not understand roman literal '" + s + "'" );
 				}
 			}
 			case 2: {
@@ -95,14 +97,42 @@ public class Roman
 				char b = s.charAt( 1 );
 				if ( bigger( b, a ) )
 				{
-					return roman( ""+b ) - roman( ""+a );
+					int r1 = roman( ""+a );
+					if ( r1 == 5 || r1 == 50 || r1 == 500 )
+					{
+						 throw new RuntimeException( "Cannot substract '" + a + "' from '" + b + "'" );
+					}
+					int r2 = roman( ""+b );
+					return r2 - r1;
 				}
 				else {
 					return roman( ""+a ) + roman( ""+b );
 				}
 			}
+			default: // bigger than 2
+			{
+				int k = len / 2;
+				for ( int i = 0; i < len - 1; i++ )
+				{
+					char a = s.charAt( i );
+					char b = s.charAt( i + 1 );
+					if ( bigger( b, a ) )
+					{
+						k = i;
+						int r1 = roman( ""+a );
+						if ( r1 == 5 || r1 == 50 || r1 == 500 )
+						{
+							 throw new RuntimeException( "Cannot substract '" + a + "' from '" + b + "'" );
+						}
+						break;
+					}
+				}
+				String s1 = s.substring( 0, k - 1 );
+				String s2 = s.substring( k );
+				return roman( s1 ) + roman( s2 );
+			}
 		}
-		throw new RuntimeException( "Did not understand roman literal '" + s + "'" );
+		
 	}
     public static void main( String [] args )
 		throws IOException
