@@ -131,7 +131,7 @@ public class Roman
 	}
 	public int roman( String s )
 	{
-		System.out.println("Invoking roman( s = "+s+")");
+		// System.out.println("Invoking roman( s = "+s+")");
 		s = s.trim();
 		int len = s.length();
 		switch( len )
@@ -216,7 +216,7 @@ public class Roman
 				}
 				String s1 = s.substring( 0, k );
 				String s2 = s.substring( k );
-				System.out.println("Divided into s1 = '"+s1+"' and s2 = '"+s2+"'");
+				// System.out.println("Divided into s1 = '"+s1+"' and s2 = '"+s2+"'");
 				return roman( s1 ) + roman( s2 );
 			}
 		}
@@ -314,7 +314,8 @@ public class Roman
 								System.out.println("Mineral "+ mineral +" not priced");
 								return;
 							}
-							System.out.println( extraterrestrialNumber + mineral + " is " + this.roman( roman ) + " Credits" );
+							Fraction value = fraction.multiply( this.roman( roman ) );
+							System.out.println( extraterrestrialNumber + mineral + " is " + value + " Credits" );
 						}
 					}
 					else {
@@ -381,7 +382,9 @@ public class Roman
 									return;
 								}
 								else {
-									mineralMap.put( mineral, new Fraction( number, denominator ) );
+									Fraction frac = new Fraction( number, denominator );
+									// System.out.println("Price for mineral " + mineral + " is " + frac);
+									mineralMap.put( mineral, frac );
 								}
 							}
 						}
